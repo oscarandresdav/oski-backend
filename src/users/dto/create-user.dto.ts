@@ -1,4 +1,4 @@
-import { IsBoolean, IsString } from 'class-validator';
+import { IsBoolean, IsOptional, IsString } from 'class-validator';
 
 export class CreateUserDto {
   @IsString()
@@ -11,5 +11,6 @@ export class CreateUserDto {
   readonly password: string;
 
   @IsBoolean()
+  @IsOptional()
   readonly status: boolean;
 }

@@ -1,46 +1,47 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { User } from './entities/user.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersService {
-  private users: User[] = [
-    {
-      id: '1',
-      username: 'oscarandresdav',
-      email: 'oscar@mail.com',
-      password: 'password',
-      status: true,
-    },
-  ];
+  constructor(
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
+  ) {}
 
   findAll() {
-    return this.users;
+    return this.userRepository.find();
   }
 
-  findOne(id: string) {
-    const user = this.users.find((item) => item.id === id);
+  async findOne(id: string) {
+    const user = this.userRepository.findOne({ where: { id: id } });
     if (!user) {
       throw new NotFoundException(`User with id {${id}} not found`);
     }
     return user;
   }
 
-  create(createUserDto: any) {
-    this.users.push(createUserDto);
-    return createUserDto;
+  create(createUserDto: CreateUserDto) {
+    const user = this.userRepository.create(createUserDto);
+    return this.userRepository.save(user);
   }
 
-  update(id: string, updateUserDto: any) {
-    const existingUser = this.findOne(id);
-    if (existingUser) {
-      // update the existing entity
+  async update(id: string, updateUserDto: UpdateUserDto) {
+    const user = await this.userRepository.preload({
+      id,
+      ...updateUserDto,
+    });
+    if (!user) {
+      throw new NotFoundException(`User with id {${id}} not found`);
     }
+    return this.userRepository.save(user);
   }
 
-  remove(id: string) {
-    const userIndex = this.users.findIndex((item) => item.id === id);
-    if (userIndex >= 0) {
-      this.users.splice(userIndex, 1);
-    }
+  async remove(id: string) {
+    const user = await this.findOne(id);
+    return this.userRepository.remove(user);
   }
 }
