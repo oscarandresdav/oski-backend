@@ -22,11 +22,13 @@ export class UsersController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
+    console.log(typeof id);
     return this.usersService.findOne(id);
   }
 
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
+    console.log(createUserDto instanceof CreateUserDto);
     return this.usersService.create(createUserDto);
   }
 
