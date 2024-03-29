@@ -9,6 +9,7 @@ import { IceRatesModule } from './ice-rates/ice-rates.module';
 import { IvaRatesModule } from './iva-rates/iva-rates.module';
 import { ProductTypesModule } from './product-types/product-types.module';
 import { MeasuringUnitsModule } from './measuring-units/measuring-units.module';
+import { ProductsModule } from './products/products.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { MeasuringUnitsModule } from './measuring-units/measuring-units.module';
     IvaRatesModule,
     ProductTypesModule,
     MeasuringUnitsModule,
+    ProductsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
