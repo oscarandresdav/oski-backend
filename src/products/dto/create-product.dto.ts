@@ -5,6 +5,7 @@ import {
   IsPositive,
   IsString,
 } from 'class-validator';
+import { Category } from 'src/categories/entities/category.entity';
 
 export class CreateProductDto {
   @IsString()
@@ -68,4 +69,7 @@ export class CreateProductDto {
   @IsBoolean()
   @IsOptional()
   readonly status: boolean;
+
+  @IsString()
+  readonly category: Category;
 }

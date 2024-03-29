@@ -1,7 +1,9 @@
+import { Category } from 'src/categories/entities/category.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
   VersionColumn,
@@ -71,4 +73,7 @@ export class Product {
 
   @VersionColumn({ nullable: true })
   revision: number;
+
+  @ManyToOne(() => Category, (category) => category.products)
+  category: Category;
 }
