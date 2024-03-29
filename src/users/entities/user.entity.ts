@@ -15,7 +15,13 @@ export class User {
   @Column({ length: 16, unique: true })
   username: string;
 
-  @Column({ length: 255 })
+  @Column({
+    length: 255,
+    transformer: {
+      from: (value: string) => value,
+      to: (value: string) => value.toLowerCase(),
+    },
+  })
   email: string;
 
   @Column({ length: 32 })

@@ -1,7 +1,9 @@
+import { Product } from 'src/products/entities/product.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
   VersionColumn,
@@ -12,7 +14,14 @@ export class MeasuringUnit {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ length: 255, unique: true })
+  @Column({
+    length: 255,
+    unique: true,
+    transformer: {
+      from: (value: string) => value,
+      to: (value: string) => value.toUpperCase(),
+    },
+  })
   name: string;
 
   @Column({ length: 45, nullable: true })
@@ -32,4 +41,7 @@ export class MeasuringUnit {
 
   @VersionColumn({ nullable: true })
   revision: number;
+
+  @OneToMany(() => Product, (product) => product.measuring_unit)
+  products: Product[];
 }

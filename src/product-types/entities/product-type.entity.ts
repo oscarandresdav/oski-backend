@@ -1,7 +1,9 @@
+import { Product } from 'src/products/entities/product.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
   VersionColumn,
@@ -12,7 +14,14 @@ export class ProductType {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ length: 45, unique: true })
+  @Column({
+    length: 45,
+    unique: true,
+    transformer: {
+      from: (value: string) => value,
+      to: (value: string) => value.toUpperCase(),
+    },
+  })
   name: string;
 
   @Column({ type: 'smallint', unique: true })
@@ -29,4 +38,7 @@ export class ProductType {
 
   @VersionColumn({ nullable: true })
   revision: number;
+
+  @OneToMany(() => Product, (product) => product.product_type)
+  products: Product[];
 }
