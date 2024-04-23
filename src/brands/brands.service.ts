@@ -4,6 +4,7 @@ import { Brand } from './entities/brand.entity';
 import { Repository } from 'typeorm';
 import { CreateBrandDto } from './dto/create-brand.dto';
 import { UpdateBrandDto } from './dto/update-brand.dto';
+import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto/pagination-query.dto';
 
 @Injectable()
 export class BrandsService {
@@ -12,8 +13,12 @@ export class BrandsService {
     private readonly brandRepository: Repository<Brand>,
   ) {}
 
-  findAll() {
-    return this.brandRepository.find();
+  findAll(paginationQueryDto: PaginationQueryDto) {
+    const { limit, offset } = paginationQueryDto;
+    return this.brandRepository.find({
+      skip: offset,
+      take: limit,
+    });
   }
 
   async findOne(id: string) {

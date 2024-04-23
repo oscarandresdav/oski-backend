@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto/pagination-query.dto';
 
 @Injectable()
 export class UsersService {
@@ -12,8 +13,12 @@ export class UsersService {
     private readonly userRepository: Repository<User>,
   ) {}
 
-  findAll() {
-    return this.userRepository.find();
+  findAll(paginationQueryDto: PaginationQueryDto) {
+    const { limit, offset } = paginationQueryDto;
+    return this.userRepository.find({
+      skip: offset,
+      take: limit,
+    });
   }
 
   async findOne(id: string) {

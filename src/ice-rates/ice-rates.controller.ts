@@ -6,18 +6,20 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { IceRatesService } from './ice-rates.service';
 import { CreateIceRateDto } from './dto/create-ice-rate.dto';
 import { UpdateIceRateDto } from './dto/update-ice-rate.dto';
+import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto/pagination-query.dto';
 
 @Controller('ice-rates')
 export class IceRatesController {
   constructor(private readonly iceService: IceRatesService) {}
 
   @Get()
-  findAll() {
-    return this.iceService.findAll();
+  findAll(@Query() paginationQueryDto: PaginationQueryDto) {
+    return this.iceService.findAll(paginationQueryDto);
   }
 
   @Get(':id')

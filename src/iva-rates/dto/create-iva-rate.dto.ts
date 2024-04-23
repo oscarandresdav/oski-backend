@@ -20,6 +20,10 @@ export class CreateIvaRateDto {
 
   @IsNumber()
   @IsNotEmpty()
+  readonly value: number;
+
+  @IsNumber()
+  @IsNotEmpty()
   readonly sort: number;
 
   @IsBoolean()

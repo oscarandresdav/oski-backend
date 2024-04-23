@@ -6,18 +6,20 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { ProductTypesService } from './product-types.service';
 import { CreateProductTypeDto } from './dto/create-product-type.dto';
 import { UpdateProductTypeDto } from './dto/update-product-type.dto';
+import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto/pagination-query.dto';
 
 @Controller('product-types')
 export class ProductTypesController {
   constructor(private readonly productTypesService: ProductTypesService) {}
 
   @Get()
-  findAll() {
-    return this.productTypesService.findAll();
+  findAll(@Query() paginationQueryDto: PaginationQueryDto) {
+    return this.productTypesService.findAll(paginationQueryDto);
   }
 
   @Get(':id')

@@ -27,7 +27,10 @@ export class IvaRate {
   @Column({ length: 3, unique: true })
   code: string;
 
-  @Column({ type: 'smallint', unique: true })
+  @Column({ type: 'tinyint' })
+  value: number;
+
+  @Column({ type: 'tinyint', unique: true })
   sort: number;
 
   @Column({ default: true })

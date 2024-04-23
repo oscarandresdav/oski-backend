@@ -4,6 +4,7 @@ import { Category } from './entities/category.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
+import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto/pagination-query.dto';
 
 @Injectable()
 export class CategoriesService {
@@ -12,8 +13,12 @@ export class CategoriesService {
     private readonly categoryRepository: Repository<Category>,
   ) {}
 
-  findAll() {
-    return this.categoryRepository.find();
+  findAll(paginationQueryDto: PaginationQueryDto) {
+    const { limit, offset } = paginationQueryDto;
+    return this.categoryRepository.find({
+      skip: offset,
+      take: limit,
+    });
   }
 
   async findOne(id: string) {

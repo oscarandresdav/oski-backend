@@ -6,18 +6,20 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { MeasuringUnitsService } from './measuring-units.service';
 import { CreateMeasuringUnitDto } from './dto/create-measuring-unit.dto';
 import { UpdateMeasuringUnitDto } from './dto/update-measuring-unit.dto';
+import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto/pagination-query.dto';
 
 @Controller('measuring-units')
 export class MeasuringUnitsController {
   constructor(private readonly measurementUnitService: MeasuringUnitsService) {}
 
   @Get()
-  findAll() {
-    return this.measurementUnitService.findAll();
+  findAll(@Query() paginationQueryDto: PaginationQueryDto) {
+    return this.measurementUnitService.findAll(paginationQueryDto);
   }
 
   @Get(':id')

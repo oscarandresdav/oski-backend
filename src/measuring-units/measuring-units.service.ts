@@ -4,6 +4,7 @@ import { MeasuringUnit } from './entities/measuring-unit.entity';
 import { Repository } from 'typeorm';
 import { CreateMeasuringUnitDto } from './dto/create-measuring-unit.dto';
 import { UpdateMeasuringUnitDto } from './dto/update-measuring-unit.dto';
+import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto/pagination-query.dto';
 
 @Injectable()
 export class MeasuringUnitsService {
@@ -12,8 +13,12 @@ export class MeasuringUnitsService {
     private readonly measuringUnitRepository: Repository<MeasuringUnit>,
   ) {}
 
-  findAll() {
-    return this.measuringUnitRepository.find();
+  findAll(paginationQueryDto: PaginationQueryDto) {
+    const { limit, offset } = paginationQueryDto;
+    return this.measuringUnitRepository.find({
+      skip: offset,
+      take: limit,
+    });
   }
 
   async findOne(id: string) {

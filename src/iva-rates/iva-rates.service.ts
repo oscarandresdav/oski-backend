@@ -4,6 +4,7 @@ import { IvaRate } from './entities/iva-rate.entity';
 import { Repository } from 'typeorm';
 import { CreateIvaRateDto } from './dto/create-iva-rate.dto';
 import { UpdateIvaRateDto } from './dto/update-iva-rate.dto';
+import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto/pagination-query.dto';
 
 @Injectable()
 export class IvaRatesService {
@@ -12,8 +13,12 @@ export class IvaRatesService {
     private readonly ivaRepository: Repository<IvaRate>,
   ) {}
 
-  findAll() {
-    return this.ivaRepository.find();
+  findAll(paginationQueryDto: PaginationQueryDto) {
+    const { limit, offset } = paginationQueryDto;
+    return this.ivaRepository.find({
+      skip: offset,
+      take: limit,
+    });
   }
 
   async findOne(id: string) {

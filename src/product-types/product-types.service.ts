@@ -4,6 +4,7 @@ import { ProductType } from './entities/product-type.entity';
 import { Repository } from 'typeorm';
 import { CreateProductTypeDto } from './dto/create-product-type.dto';
 import { UpdateProductTypeDto } from './dto/update-product-type.dto';
+import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto/pagination-query.dto';
 
 @Injectable()
 export class ProductTypesService {
@@ -12,8 +13,12 @@ export class ProductTypesService {
     private readonly productTypeRepository: Repository<ProductType>,
   ) {}
 
-  findAll() {
-    return this.productTypeRepository.find();
+  findAll(paginationQueryDto: PaginationQueryDto) {
+    const { limit, offset } = paginationQueryDto;
+    return this.productTypeRepository.find({
+      skip: offset,
+      take: limit,
+    });
   }
 
   async findOne(id: string) {

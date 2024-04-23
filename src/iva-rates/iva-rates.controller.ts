@@ -6,18 +6,20 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { IvaRatesService } from './iva-rates.service';
 import { CreateIvaRateDto } from './dto/create-iva-rate.dto';
 import { UpdateIvaRateDto } from './dto/update-iva-rate.dto';
+import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto/pagination-query.dto';
 
 @Controller('iva-rates')
 export class IvaRatesController {
   constructor(private readonly ivaService: IvaRatesService) {}
 
   @Get()
-  findAll() {
-    return this.ivaService.findAll();
+  findAll(@Query() paginationQueryDto: PaginationQueryDto) {
+    return this.ivaService.findAll(paginationQueryDto);
   }
 
   @Get(':id')

@@ -4,6 +4,7 @@ import { IceRate } from './entities/ice-rate.entity';
 import { Repository } from 'typeorm';
 import { CreateIceRateDto } from './dto/create-ice-rate.dto';
 import { UpdateIceRateDto } from './dto/update-ice-rate.dto';
+import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto/pagination-query.dto';
 
 @Injectable()
 export class IceRatesService {
@@ -12,8 +13,12 @@ export class IceRatesService {
     private readonly iceRepository: Repository<IceRate>,
   ) {}
 
-  findAll() {
-    return this.iceRepository.find();
+  findAll(paginationQueryDto: PaginationQueryDto) {
+    const { limit, offset } = paginationQueryDto;
+    return this.iceRepository.find({
+      skip: offset,
+      take: limit,
+    });
   }
 
   async findOne(id: string) {
